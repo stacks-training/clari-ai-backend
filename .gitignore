@@ -1,0 +1,11 @@
+# environment folders
+venv
+.env
+coini-env
+
+# cache files
+__pycache__
+
+
+# mac hidden files
+.DS_Store

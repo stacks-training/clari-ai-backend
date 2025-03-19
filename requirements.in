@@ -1,0 +1,11 @@
+pip install fastAPI
+pip install uvicorn
+pip install requests
+pip install requests_html
+pip install python-dotenv
+pip install sentry_sdk
+
+##########################
+##### ONLY IN DEPLOY #####
+# pip install gunicorn 
+##########################
