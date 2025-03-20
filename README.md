@@ -4,7 +4,7 @@ install Python 3.8.10
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
-uvicorn main:app --reload
+gunicorn --reload -w 4 --timeout 120 -k uvicorn.workers.UvicornWorker main:app       
 ```
 
 # How to install python 3 in Ubuntu 20
@@ -29,7 +29,7 @@ sudo apt install python3.8 -y
 
 ## clone repo
 ```
-    git clone https://gitlab.com/coini/coini-scraper.git
+    git clone https://github.com/stacks-training/clari-ai-backend.git
 ```
 
 ## install pip
@@ -93,8 +93,9 @@ server {
 
 
 # run with gunicorn and test nginx config 
+It's important to set up a higher timeout because llms take more time to return a response
 ```
-    gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app  
+    gunicorn --reload -w 4 --timeout 120 -k uvicorn.workers.UvicornWorker main:app       
 ```
 
 
