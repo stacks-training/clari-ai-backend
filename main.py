@@ -1,27 +1,21 @@
-import sentry_sdk
 import logging
-from fastapi import FastAPI, BackgroundTasks, Response, status
+from fastapi import HTTPException
+from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
-from src.transaction import Transaction
-from src.models import Item, Deposit
+from src.routers import ai_router
 from src.settings import Settings
 
-transaction = Transaction()
+# Initialize settings
 settings = Settings()
 
-gunicorn_logger = logging.getLogger('gunicorn.error')
+# Initialize FastAPI app
 app = FastAPI()
 logger = logging.getLogger(__name__)
 
-fastapi_logger.handlers = gunicorn_logger.handlers
-fastapi_logger.setLevel(gunicorn_logger.level)
-
+# This endpoint is used only for testing purposes
 @app.get("/settings/")
 async def showSettings():
     response = settings.showData()
     return response
-
-@app.post("/sample/v1/{wallet}")
-async def scrapForPayments(wallet: str, item:Item):
-    response = transaction.process_deposit()
-    return response
+    
+app.include_router(ai_router.router, prefix="/api/ai", tags=["AI"])
