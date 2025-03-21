@@ -1,6 +1,8 @@
 from openai import OpenAI
 import logging
 from src.settings import Settings
+import json
+import re
 
 logger = logging.getLogger(__name__)
 settings = Settings()
@@ -12,7 +14,7 @@ class AIService:
         self.api_key = settings.OPENROUTER_API_KEY
         self.base_url = settings.OPENROUTER_BASE_URL
         
-    async def query_gemini(self, prompt: str, ):
+    async def query_gemini(self, prompt: str):
         try:
             client = OpenAI(
                 base_url=self.base_url,
@@ -32,7 +34,9 @@ class AIService:
                     ]   
             )
             response = completion.choices[0].message.content
-            return response
+            clean_response = re.sub(r'^```(?:json)?\s*|\s*```$', '', response.strip())
+            parsed_response = json.loads(clean_response)
+            return parsed_response
         except Exception as e:
             logger.error(f"Error querying OpenRouter: {str(e)}")
             raise
@@ -57,6 +61,7 @@ class AIService:
                     ]   
             )
             response = completion.choices[0].message.content
+            # parsed_response = json.loads(response)
             return response
         except Exception as e:
             logger.error(f"Error querying OpenRouter: {str(e)}")
