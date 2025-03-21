@@ -2,8 +2,8 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 import logging
 
-from models.ai_models import GeminiRequest, GeminiResponse, QwenRequest, QwenResponse
 from src.services.ai_service import AIService
+from src.models.ai_models import GeminiRequest, GeminiResponse, QwenRequest, QwenResponse
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -20,8 +20,6 @@ async def query_gemini(request: GeminiRequest):
         ai_service = AIService()
         response = await ai_service.query_gemini(
             prompt=request.prompt,
-            max_tokens=request.max_tokens,
-            temperature=request.temperature
         )
         return JSONResponse(content=response)
     except Exception as e:
@@ -38,8 +36,6 @@ async def query_qwen(request: QwenRequest):
         ai_service = AIService()
         response = await ai_service.query_qwen(
             prompt=request.prompt,
-            max_tokens=request.max_tokens,
-            temperature=request.temperature
         )
         return JSONResponse(content=response)
     except Exception as e:

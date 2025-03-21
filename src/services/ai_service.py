@@ -12,7 +12,7 @@ class AIService:
         self.api_key = settings.OPENROUTER_API_KEY
         self.base_url = settings.OPENROUTER_BASE_URL
         
-    async def query_gemini(self, prompt: str):
+    async def query_gemini(self, prompt: str, ):
         try:
             client = OpenAI(
                 base_url=self.base_url,
@@ -21,6 +21,10 @@ class AIService:
             completion = client.chat.completions.create(
                 model = "google/gemini-2.0-flash-lite-preview-02-05:free",
                 messages=[
+                        {
+                            "role": "system",
+                            "content": "You will receive an order to write a smart contract on Clarity for the stacks blockchain. I want you to only return a json response following the next format: {\"name\": \"<contract_name>\", \"code\": \"<contract_code>\"}. With no other commentarie, just and only the json"
+                        },
                         {
                             "role": "user",
                             "content": f"{prompt}"
@@ -42,6 +46,10 @@ class AIService:
             completion = client.chat.completions.create(
                 model = "qwen/qwq-32b:free",
                 messages=[
+                        {
+                            "role": "system",
+                            "content": "You will receive an order to write a smart contract on Clarity for the stacks blockchain. I want you to only return a json response following the next format: {\"name\": \"<contract_name>\", \"code\": \"<contract_code>\"}. With no other commentarie, just and only the json"
+                        },
                         {
                             "role": "user",
                             "content": f"{prompt}"
